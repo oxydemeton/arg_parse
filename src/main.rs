@@ -1,5 +1,3 @@
-use std::vec;
-
 use arg_parse::{ArgParser};
 use arg_parse::config;
 
@@ -11,5 +9,8 @@ static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
 
 fn main() {
     let root_cmd = PARSER.parse();
-    println!("{:?}", root_cmd)
+    match root_cmd {
+        Ok(result) => println!("Result: {:?}", result),
+        Err(error) => println!("ERROR: {:?}", error)
+    }
 }

@@ -15,11 +15,24 @@ impl ArgParser {
             config_root: config::Cmd::new()
         }
     }
-    pub fn parse(&self) -> result::Cmd {
-        let sys_args: Vec<String> = std::env::args().collect();    
-        self.config_root.parse(&sys_args)
+    pub fn parse(&self) -> std::result::Result<result::Cmd, ParseError> {
+        let mut sys_args: Vec<String> = std::env::args().collect();
+        for a in sys_args.iter_mut() {
+            *a = a.trim().to_owned()
+        }
+        if sys_args.len() <= 1 {
+            println!();
+            Err(ParseError::NoArguments)
+        }else {
+            Ok(self.config_root.parse(&sys_args[1..sys_args.len()]))
+        }
     }
 
     //Check for duplicate names
     fn check(){todo!()}
+}
+
+#[derive(Debug, Clone)]
+pub enum ParseError {
+    NoArguments
 }

@@ -26,7 +26,7 @@ impl Cmd {
             args: vec![],
             sub_cmd: None,
         };
-
+        
         for a in arguments {
             if a.starts_with("--") { //Flags
                 let name = a.trim_start_matches("--");
