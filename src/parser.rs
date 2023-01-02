@@ -14,16 +14,26 @@ impl ArgParser {
             config_root: config::Cmd::new()
         }
     }
-    pub fn parse(&self) -> std::result::Result<result::Cmd, ParseError> {
+    pub fn parse(&self) -> Result<result::Cmd, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();
         for a in sys_args.iter_mut() {
             *a = a.trim().to_owned()
         }
         if sys_args.len() <= 1 {
-            println!();
             Err(ParseError::NoArguments)
         }else {
             Ok(self.config_root.parse(&sys_args[1..sys_args.len()]))
+        }
+    }
+
+    pub fn parse_custom(&self, mut args: Vec<String>) -> Result<result::Cmd, ParseError> {
+        for a in args.iter_mut() {
+            *a = a.trim().to_owned()
+        }
+        if args.len() <= 1 {
+            Err(ParseError::NoArguments)
+        }else {
+            Ok(self.config_root.parse(&args[1..args.len()]))
         }
     }
 
