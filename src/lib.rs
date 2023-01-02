@@ -11,7 +11,10 @@
 //! - [x] Ability to create parser as constant or static variable (at compile time)
 //! - [ ] Ability to give of list of arguments (not using args from std::env::args)
 
+/// Structs and Enums to configure the parser
 pub mod config;
+/// Structs and Enums the parser return as a Result
 pub mod result;
+/// Tools to parse Arguments
 pub mod parser;
-pub use parser::*;
+pub use parser::ArgParser;
