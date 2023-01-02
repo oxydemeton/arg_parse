@@ -30,16 +30,14 @@ impl Cmd {
         for a in arguments {
             if a.starts_with("--") { //Flags
                 let name = a.trim_start_matches("--");
-                for self_a in self.args {
-                    match self_a {
-                        Arg::Flag(self_name, _) => {
-                            if *self_name == name {
-                                result.args.push(super::result::Arg::Flag(self_name, true))
-                            }
-                        },
-                        Arg::Arg(_, _) => todo!("Error messages not implemented"),
-                    }
+                match self.find_arg(name) {
+                    Some(a) => match a {
+                        Arg::Flag(self_name, _) => result.args.push(super::result::Arg::Flag(self_name, true)),
+                        Arg::Arg(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                    },
+                    None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
                 }
+                
             }else if a.starts_with("-") { // Arguments
                 todo!("Parsing Arguments not implemented")
             } else { //Subcommand
@@ -48,5 +46,23 @@ impl Cmd {
 
         }
         result        
+    }
+
+    fn find_arg(&self, name: &str)-> Option<&Arg> {
+        for self_a in self.args {
+            match self_a {
+                Arg::Flag(self_name, _) => {
+                    if *self_name == name {
+                        return Some(self_a);
+                    }
+                },
+                Arg::Arg(self_name, _) => {
+                    if *self_name == name {
+                        return Some(self_a);
+                    }
+                },
+            }
+        }
+        None
     }
 }
