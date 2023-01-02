@@ -4,7 +4,7 @@ pub enum Arg {
     //Name, required
     Flag(&'static str, bool),
     //Name, required
-    Arg(&'static str, bool)
+    Parameter(&'static str, bool)
 }
 #[derive(Debug)]
 pub struct Cmd {
@@ -38,7 +38,7 @@ impl Cmd {
                 match self.find_arg(name) {
                     Some(a) => match a {
                         Arg::Flag(self_name, _) => result.args.push(super::result::Arg::Flag(self_name, true)),
-                        Arg::Arg(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                        Arg::Parameter(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
                     },
                     None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
                 }
@@ -47,13 +47,13 @@ impl Cmd {
                 let name = a.trim_start_matches("-");
                 match self.find_arg(name) {
                     Some(a) => match a {
-                        Arg::Arg(self_name, _) => {
+                        Arg::Parameter(self_name, _) => {
                             if i+1 >= arguments.len() {
                                 todo!("Error handling not implemented: Argument without parameter.");
                             }
                             let value = arguments[i+1].clone();
                             skip +=1;
-                            result.args.push(super::result::Arg::Arg(self_name, Some(value)))
+                            result.args.push(super::result::Arg::Parameter(self_name, Some(value)))
                         },
                         Arg::Flag(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
                     },
@@ -75,7 +75,7 @@ impl Cmd {
                         return Some(self_a);
                     }
                 },
-                Arg::Arg(self_name, _) => {
+                Arg::Parameter(self_name, _) => {
                     if *self_name == name {
                         return Some(self_a);
                     }
