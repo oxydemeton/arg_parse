@@ -2,7 +2,7 @@ use arg_parse::{ArgParser};
 use arg_parse::config;
 
 
-const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a", false)];
+const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a", false), config::Arg::Arg("b", false)];
 const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
 
 static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);

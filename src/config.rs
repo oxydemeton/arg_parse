@@ -26,8 +26,13 @@ impl Cmd {
             args: vec![],
             sub_cmd: None,
         };
-        
-        for a in arguments {
+
+        let mut skip = 0;        
+        for (i, a) in arguments.iter().enumerate() {
+            if skip > 0 {
+                skip -= 1;
+                continue;
+            }
             if a.starts_with("--") { //Flags
                 let name = a.trim_start_matches("--");
                 match self.find_arg(name) {
@@ -39,7 +44,21 @@ impl Cmd {
                 }
                 
             }else if a.starts_with("-") { // Arguments
-                todo!("Parsing Arguments not implemented")
+                let name = a.trim_start_matches("-");
+                match self.find_arg(name) {
+                    Some(a) => match a {
+                        Arg::Arg(self_name, _) => {
+                            if i+1 >= arguments.len() {
+                                todo!("Error handling not implemented: Argument without parameter.");
+                            }
+                            let value = arguments[i+1].clone();
+                            skip +=1;
+                            result.args.push(super::result::Arg::Arg(self_name, Some(value)))
+                        },
+                        Arg::Flag(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                    },
+                    None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
+                }
             } else { //Subcommand
                 todo!("Subcommands not implemented")
             }
