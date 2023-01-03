@@ -1,6 +1,6 @@
 # arg_parse for rust
 ### Description
-arg_pare is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.
+arg_parse is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.
 
 ## Features
 - [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
