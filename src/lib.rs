@@ -9,7 +9,30 @@
 //! - [ ] Returning results instead of throwing unfinished error messages
 //! - [ ] Simple creation of parser
 //! - [x] Ability to create parser as constant or static variable (at compile time)
-//! - [ ] Ability to give of list of arguments (not using args from std::env::args)
+//! - [ ] Ability to give of list of arguments (not using args from [std::env::args()](std::env::args()))
+//! - [ ] Ability to provide default values
+//! - [ ] Ability to make Argument or subcommand required
+//! # Example
+//! Prints if the flag `--a` is provided and the parameter provided under `-b`
+//! ```rust
+//! use arg_parse::ArgParser;
+//! use arg_parse::config;
+//! // Define all Arguments of the program itself/root command (compile time)
+//! const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a"), config::Arg::Parameter("b")];
+//! // Define the Root Command, without any possible sub commands (compile time)
+//! const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
+//! // Create the Parser in static memory, available everywhere (Created at compile time)
+//! static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
+//! 
+//! fn main() {
+//!     //Parse the by the user provided Arguments
+//!     let root_cmd = PARSER.parse();
+//!     match root_cmd {
+//!         Ok(result) => println!("Result: {:?}", result),
+//!         Err(error) => println!("ERROR: {:?}", error)
+//!     }
+//! }
+//! ```
 
 /// Structs and Enums to configure the parser
 pub mod config;

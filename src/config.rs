@@ -1,11 +1,22 @@
+//! The config module includes everything to configure the [parser](parser::ArgParser)
+//! Includes:
+//! - [enum Arg](config::Arg) to defer between Flags, Parameters
+//! - [struct Cmd](config::Cmd) to describe sub commands
 use std::vec;
+
+/// Enum for configuring arguments
 #[derive(Debug, Clone)]
 pub enum Arg {
-    //Name, required
-    Flag(&'static str, bool),
-    //Name, required
-    Parameter(&'static str, bool)
+    /// Flags which are false by default and are set to true by being used by the user
+    /// Has its name as argument
+    Flag(&'static str),
+    /// Parameters which are string inputs
+    /// Has its name as argument
+    Parameter(&'static str)
 }
+/// Cmd Struct
+/// Describes the root and all sub commands
+/// A commands might have arguments ([enum Arg](Arg)) and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Cmd {
     pub args: &'static[Arg],
@@ -13,14 +24,16 @@ pub struct Cmd {
 }
 
 impl Cmd {
+    /// Creates an Command without any possible arguments or sub commands
     pub const fn new()->Self {
         Self { args: &[], sub_cmd: &[]}
     }
-    
+    /// Creates a Commands having a list of arguments and sub commands
     pub const fn from(args: &'static[Arg], sub_cmd: &'static[Cmd])->Self {
         Self { args, sub_cmd}
     }
-    //Parse a command from a bunch of words
+    /// Function to parse only this subcommand with the arguments
+    /// Meant for use by the [parser](super::parser::ArgParser) internally
     pub fn parse(&self, arguments: &[String])->super::result::Cmd {
         let mut result = super::result::Cmd {
             args: vec![],
@@ -37,8 +50,8 @@ impl Cmd {
                 let name = a.trim_start_matches("--");
                 match self.find_arg(name) {
                     Some(a) => match a {
-                        Arg::Flag(self_name, _) => result.args.push(super::result::Arg::Flag(self_name, true)),
-                        Arg::Parameter(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                        Arg::Flag(self_name) => result.args.push(super::result::Arg::Flag(self_name, true)),
+                        Arg::Parameter(_) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
                     },
                     None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
                 }
@@ -47,7 +60,7 @@ impl Cmd {
                 let name = a.trim_start_matches("-");
                 match self.find_arg(name) {
                     Some(a) => match a {
-                        Arg::Parameter(self_name, _) => {
+                        Arg::Parameter(self_name) => {
                             if i+1 >= arguments.len() {
                                 todo!("Error handling not implemented: Argument without parameter.");
                             }
@@ -55,7 +68,7 @@ impl Cmd {
                             skip +=1;
                             result.args.push(super::result::Arg::Parameter(self_name, Some(value)))
                         },
-                        Arg::Flag(_, _) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                        Arg::Flag(_) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
                     },
                     None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
                 }
@@ -70,12 +83,12 @@ impl Cmd {
     fn find_arg(&self, name: &str)-> Option<&Arg> {
         for self_a in self.args {
             match self_a {
-                Arg::Flag(self_name, _) => {
+                Arg::Flag(self_name) => {
                     if *self_name == name {
                         return Some(self_a);
                     }
                 },
-                Arg::Parameter(self_name, _) => {
+                Arg::Parameter(self_name) => {
                     if *self_name == name {
                         return Some(self_a);
                     }
