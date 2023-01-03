@@ -6,6 +6,13 @@ pub struct ArgParser {
     config_root: config::Cmd,
 }
 impl From<config::Cmd> for ArgParser {
+    fn from(value: config::Cmd) -> Self {
+        Self {
+            config_root: c
+        }
+    }
+} 
+impl ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
     /// ```rust
@@ -13,13 +20,11 @@ impl From<config::Cmd> for ArgParser {
     /// const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
     /// static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
     /// ```
-    fn from(c: config::Cmd) -> Self {
+    pub const fn from(c: config::Cmd)-> Self {
         Self {
             config_root: c
         }
     }
-} 
-impl ArgParser {
     /// Create an empty parser which doesn't have any contents
     pub const fn new<'f>()-> Self {
         Self {
