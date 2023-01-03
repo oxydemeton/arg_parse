@@ -44,7 +44,7 @@ impl ArgParser {
         if sys_args.len() <= 1 {    //Ignore first argument, because its the application path
             Err(ParseError::NoArguments)
         }else {
-            Ok(self.config_root.parse(&sys_args[1..sys_args.len()]))
+            self.config_root.parse(&sys_args[1..sys_args.len()])
         }
     }
 
@@ -56,7 +56,7 @@ impl ArgParser {
         if args.len() <= 0 {
             Err(ParseError::NoArguments)
         }else {
-            Ok(self.config_root.parse(&args[0..args.len()]))
+            self.config_root.parse(&args[0..args.len()])
         }
     }
 
@@ -66,5 +66,9 @@ impl ArgParser {
 
 #[derive(Debug, Clone)]
 pub enum ParseError {
-    NoArguments
+    NoArguments,
+    UnknownFlag{ name: String },
+    UnknownParameter{ name: String },
+    TypeNameMismatch{ name: String },
+    ParameterWithoutValue{ name: String }
 }
