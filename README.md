@@ -2,11 +2,12 @@
 # Disclaimer
 The interface for developer is work in progress. So expect minor and major changes when updating until v1.0<br>
 # Description
-arg_parse is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.
+arg_parse is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.<br>
 
 # Features & Goals
-- [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
-- [x] Parsing of `parameters` (Values mentioned after `-` which have their value(as a string) followed)
+- [x] Parsing of `short options` (Values set with `--` which default is false and set to true by being used.)
+- [x] Parsing of `long options` (Values mentioned after `-` which have their value(as a string) followed)
+- [ ] Parsing of `non options` (Single Values parameters without any prefix )
 - [ ] Parsing of `sub commands` (which only one can be used and all following arguments are related to)
 - [x] Returning results instead of throwing unfinished error messages
 - [ ] Simple creation of parser
@@ -15,39 +16,55 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 - [ ] Ability to provide default values
 - [ ] Ability to make Argument or subcommand required
 - [ ] Cache the result of parsing the cli arguments to improve performance slightly
-- [ ] Easy macro or function to configure the parser
-- [ ] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
+- [x] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 
 # Installation
-Add `arg_parse = "0.1.1"` to your cargo dependencies (`cargo.toml`).
+Add `arg_parse = "0.2.1"` to your cargo dependencies (`cargo.toml`).
 ```toml
 [dependencies]
-arg_parse = "0.1.1"
+arg_parse = "0.2.1"
 ```
 
  # Example
- Prints if the flag `--a` is provided and the parameter provided under `-b`
+ Prints the Options which are found or parsing errors.<br>
+ Arguments:
+ - LongOption: `hello` without any further arguments
+ - ShortOption: `b` with two arguments
+ - ShortOption: `a` without any arguments
  ```rust
- use arg_parse::ArgParser;
- use arg_parse::config;
- // Define all Arguments of the program itself/root command (compile time)
- const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a"), config::Arg::Parameter("b")];
- // Define the Root Command, without any possible sub commands (compile time)
- const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
- // Create the Parser in static memory, available everywhere (Created at compile time)
- static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
- 
- fn main() {
-     //Parse the by the user provided Arguments
-     let root_cmd = PARSER.parse();
-     match root_cmd {
-         Ok(result) => println!("Result: {:?}", result),
-         Err(error) => println!("ERROR: {:?}", error)
-     }
- }
+use arg_parse::ArgParser;
+use arg_parse::config;
+
+//List of all available long options
+const LONG_OPTIONS: &'static [config::LongOption] = &[
+    //Define a long option called hello without parameters
+    config::LongOption{name: "hello", value_count: 0}
+    ];
+//List of all available short options
+const SHORT_OPTIONS: &'static [config::ShortOption] = &[
+    //Define a short option called b with two parameters
+    config::ShortOption{name:'b', value_count: 2},
+    //Define a short option called a without parameters
+    config::ShortOption{name:'a', value_count: 0}
+    ];
+
+//Create the root command which is the program itself basically
+const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
+
+//Create the parser from the root command
+static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
+
+fn main() {
+    let root_cmd = PARSER.parse(); //Parse the command line arguments
+    match root_cmd {
+        Ok(result) => println!("Result: {:?}", result), //Print result
+        Err(error) => println!("ERROR: {:?}", error) //Print errors if occur
+    }
+}
  ```
 
 ### Links:
 [Github Repo](https://github.com/oxydemeton/arg_parse/) <br>
 [Crates.io](https://crates.io/crates/arg_parse)<br>
 [Rust Docs](https://docs.rs/arg_parse/latest/arg_parse/)
+ 
