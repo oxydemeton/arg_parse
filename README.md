@@ -48,4 +48,5 @@ arg_parse = "0.1.0"
 
 ### Links:
 [Github Repo](https://github.com/oxydemeton/arg_parse/) <br>
-[Crates.io](https://crates.io/crates/arg_parse)
+[Crates.io](https://crates.io/crates/arg_parse)<br>
+[Rust Docs](https://docs.rs/arg_parse/latest/arg_parse/)
