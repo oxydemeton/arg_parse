@@ -1,7 +1,7 @@
 //! # arg_parse for rust
 //! ### Description
 //! arg_pare is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.
-//! 
+//!  
 //! ## Features
 //! - [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
 //! - [x] Parsing of `parameters` (Values mentioned after `-` which have their value(as a string) followed)
@@ -14,7 +14,14 @@
 //! - [ ] Ability to make Argument or subcommand required
 //! - [ ] Cache the result of parsing the cli arguments to improve performance slightly
 //! - [ ] Easy macro or function to configure the parser
+//! - [ ] Split Config and Results into different features which can be enabled or disabled in the cargo.toml
 //! 
+//! # Installation
+//! Add `arg_parse = "0.1.0"` to your cargo dependencies (`cargo.toml`).
+//! ```toml
+//! [dependencies]
+//! arg_parse = "0.1.0"
+//! ```
 //! # Example
 //! Prints if the flag `--a` is provided and the parameter provided under `-b`
 //! ```rust
