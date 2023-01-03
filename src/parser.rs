@@ -5,7 +5,13 @@ use super::*;
 pub struct ArgParser {
     config_root: config::Cmd,
 }
-
+impl From<config::Cmd> for ArgParser {
+    fn from(value: config::Cmd) -> Self {
+        Self {
+            config_root: c
+        }
+    }
+} 
 impl ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
@@ -29,12 +35,9 @@ impl ArgParser {
     /// # Errors
     /// Described with [ParseError](ParseError)
     /// - [NoArguments](ParseError::NoArguments) --> No arguments were provided. Doesn't have to be wrong but leads to no result.
-    /// # Panic 
-    /// In the future the function should not panic any more!<br>
-    /// But for now:
-    /// - A Flag was used as an Parameter or vice versa
-    /// - A Flag or Parameter which wasn't configured was used
-    /// - Subcommands were use (because not implemented yet)
+    /// - [UnknownFlag](ParseError::UnknownFlag) --> The user provided a `flag` which isn't defined
+    /// - [UnknownParameter](ParseError::UnknownParameter) --> The user provided a `parameter` which isn't defined
+    /// - [TypeNameMismatch](ParseError::TypeNameMismatch) --> The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
 
     pub fn parse(&self) -> Result<result::Cmd, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();
@@ -44,7 +47,7 @@ impl ArgParser {
         if sys_args.len() <= 1 {    //Ignore first argument, because its the application path
             Err(ParseError::NoArguments)
         }else {
-            Ok(self.config_root.parse(&sys_args[1..sys_args.len()]))
+            self.config_root.parse(&sys_args[1..sys_args.len()])
         }
     }
 
@@ -56,7 +59,7 @@ impl ArgParser {
         if args.len() <= 0 {
             Err(ParseError::NoArguments)
         }else {
-            Ok(self.config_root.parse(&args[0..args.len()]))
+            self.config_root.parse(&args[0..args.len()])
         }
     }
 
@@ -66,5 +69,9 @@ impl ArgParser {
 
 #[derive(Debug, Clone)]
 pub enum ParseError {
-    NoArguments
+    NoArguments,
+    UnknownFlag{ name: String },
+    UnknownParameter{ name: String },
+    TypeNameMismatch{ name: String },
+    ParameterWithoutValue{ name: String }
 }

@@ -34,7 +34,8 @@ impl Cmd {
     }
     /// Function to parse only this subcommand with the arguments <br>
     /// Meant for use by the [parser](super::parser::ArgParser) internally
-    pub fn parse(&self, arguments: &[String])->super::result::Cmd {
+    pub fn parse(&self, arguments: &[String])->Result<super::result::Cmd, super::parser::ParseError> {
+        use super::parser::ParseError;
         let mut result = super::result::Cmd {
             args: vec![],
             sub_cmd: None,
@@ -51,9 +52,9 @@ impl Cmd {
                 match self.find_arg(name) {
                     Some(a) => match a {
                         Arg::Flag(self_name) => result.args.push(super::result::Arg::Flag(self_name, true)),
-                        Arg::Parameter(_) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                        Arg::Parameter(_) => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
                     },
-                    None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
+                    None => return Err(ParseError::UnknownFlag { name: String::from(name)}),
                 }
                 
             }else if a.starts_with("-") { // Arguments
@@ -62,24 +63,24 @@ impl Cmd {
                     Some(a) => match a {
                         Arg::Parameter(self_name) => {
                             if i+1 >= arguments.len() {
-                                todo!("Error handling not implemented: Argument without parameter.");
+                                return Err(ParseError::ParameterWithoutValue { name: String::from(name) });
                             }
                             let value = arguments[i+1].clone();
                             skip +=1;
                             result.args.push(super::result::Arg::Parameter(self_name, Some(value)))
                         },
-                        Arg::Flag(_) => todo!("Error message not implemented correctly: {} is an Argument, not a flag.", name),
+                        Arg::Flag(_) => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
                     },
-                    None => todo!("Error Message not implemented correctly: Unknown argument: {}", name),
+                    None => return Err(ParseError::UnknownParameter { name: String::from(name) }),
                 }
             } else { //Subcommand
                 todo!("Subcommands not implemented")
             }
 
         }
-        result        
+        Ok(result)        
     }
-
+    //Find an argument by its name in the list of them
     fn find_arg(&self, name: &str)-> Option<&Arg> {
         for self_a in self.args {
             match self_a {
