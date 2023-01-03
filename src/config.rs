@@ -9,10 +9,10 @@ use std::vec;
 pub enum Arg {
     /// Flags which are false by default and are set to true by being used by the user. <br>
     /// Has its name as argument
-    Flag(&'static str),
+    Flag{ name: &'static str },
     /// Parameters which are string inputs
     /// Has its name as argument
-    Parameter(&'static str)
+    Parameter{ name: &'static str}
 }
 
 /// Describes the root and all sub commands. <br>
@@ -51,8 +51,8 @@ impl Cmd {
                 let name = a.trim_start_matches("--");
                 match self.find_arg(name) {
                     Some(a) => match a {
-                        Arg::Flag(self_name) => result.args.push(super::result::Arg::Flag(self_name, true)),
-                        Arg::Parameter(_) => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
+                        Arg::Flag { name: self_name } => result.args.push(super::result::Arg::Flag{name: self_name, value: true}),
+                        Arg::Parameter { name: _ } => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
                     },
                     None => return Err(ParseError::UnknownFlag { name: String::from(name)}),
                 }
@@ -61,15 +61,15 @@ impl Cmd {
                 let name = a.trim_start_matches("-");
                 match self.find_arg(name) {
                     Some(a) => match a {
-                        Arg::Parameter(self_name) => {
+                        Arg::Parameter{name :self_name} => {
                             if i+1 >= arguments.len() {
                                 return Err(ParseError::ParameterWithoutValue { name: String::from(name) });
                             }
                             let value = arguments[i+1].clone();
                             skip +=1;
-                            result.args.push(super::result::Arg::Parameter(self_name, Some(value)))
+                            result.args.push(super::result::Arg::Parameter{ name: self_name, value: Some(value)})
                         },
-                        Arg::Flag(_) => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
+                        Arg::Flag{name: _} => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
                     },
                     None => return Err(ParseError::UnknownParameter { name: String::from(name) }),
                 }
@@ -84,12 +84,12 @@ impl Cmd {
     fn find_arg(&self, name: &str)-> Option<&Arg> {
         for self_a in self.args {
             match self_a {
-                Arg::Flag(self_name) => {
+                Arg::Flag{name: self_name} => {
                     if *self_name == name {
                         return Some(self_a);
                     }
                 },
-                Arg::Parameter(self_name) => {
+                Arg::Parameter{ name: self_name} => {
                     if *self_name == name {
                         return Some(self_a);
                     }

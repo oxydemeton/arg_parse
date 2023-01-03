@@ -7,9 +7,9 @@
 #[derive(Debug, Clone)]
 pub enum Arg {
     /// A Flag selected by the user which contains its name and if it was selected
-    Flag(&'static str, bool),
+    Flag{name: &'static str, value: bool},
     /// A Parameter selected by the user and it's value as a String
-    Parameter(&'static str, Option<String>)
+    Parameter{ name: &'static str, value: Option<String>}
 }
 
 /// Command selected by the user
