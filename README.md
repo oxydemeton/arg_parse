@@ -16,14 +16,13 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 - [ ] Ability to make Argument or subcommand required
 - [ ] Cache the result of parsing the cli arguments to improve performance slightly
 - [ ] Easy macro or function to configure the parser
-- [ ] Split Config and Results into different features which can be enabled or disabled in the cargo.toml
 - [ ] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 
 # Installation
-Add `arg_parse = "0.1.0"` to your cargo dependencies (`cargo.toml`).
+Add `arg_parse = "0.1.1"` to your cargo dependencies (`cargo.toml`).
 ```toml
 [dependencies]
-arg_parse = "0.1.0"
+arg_parse = "0.1.1"
 ```
 
  # Example
