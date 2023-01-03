@@ -5,8 +5,7 @@ use super::*;
 pub struct ArgParser {
     config_root: config::Cmd,
 }
-
-impl ArgParser {
+impl From<config::Cmd> for ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
     /// ```rust
@@ -14,11 +13,13 @@ impl ArgParser {
     /// const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
     /// static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
     /// ```
-    pub const fn from(c: config::Cmd)-> Self {
+    fn from(c: config::Cmd) -> Self {
         Self {
             config_root: c
         }
     }
+} 
+impl ArgParser {
     /// Create an empty parser which doesn't have any contents
     pub const fn new<'f>()-> Self {
         Self {
@@ -29,12 +30,9 @@ impl ArgParser {
     /// # Errors
     /// Described with [ParseError](ParseError)
     /// - [NoArguments](ParseError::NoArguments) --> No arguments were provided. Doesn't have to be wrong but leads to no result.
-    /// # Panic 
-    /// In the future the function should not panic any more!<br>
-    /// But for now:
-    /// - A Flag was used as an Parameter or vice versa
-    /// - A Flag or Parameter which wasn't configured was used
-    /// - Subcommands were use (because not implemented yet)
+    /// - [UnknownFlag](ParseError::UnknownFlag) --> The user provided a `flag` which isn't defined
+    /// - [UnknownParameter](ParseError::UnknownParameter) --> The user provided a `parameter` which isn't defined
+    /// - [TypeNameMismatch](ParseError::TypeNameMismatch) --> The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
 
     pub fn parse(&self) -> Result<result::Cmd, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();
