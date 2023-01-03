@@ -14,6 +14,7 @@ arg_pare is a tool to simplify the processing of command line arguments. It does
 - [ ] Ability to make Argument or subcommand required
 - [ ] Cache the result of parsing the cli arguments to improve performance slightly
 - [ ] Easy macro or function to configure the parser
+- [ ] Split Config and Results into different features which can be enabled or disabled in the cargo.toml
 
  # Example
  Prints if the flag `--a` is provided and the parameter provided under `-b`
