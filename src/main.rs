@@ -14,7 +14,6 @@ static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
 
 fn main() {
     let root_cmd = PARSER.parse();
-    assert!(matches!(root_cmd, Ok(_)));
     match root_cmd {
         Ok(result) => println!("Result: {:?}", result),
         Err(error) => println!("ERROR: {:?}", error)

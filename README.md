@@ -5,8 +5,9 @@ The interface for developer is work in progress. So expect minor and major chang
 arg_parse is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.<br>
 
 # Features & Goals
-- [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
-- [x] Parsing of `parameters` (Values mentioned after `-` which have their value(as a string) followed)
+- [x] Parsing of `short options` (Values set with `--` which default is false and set to true by being used.)
+- [x] Parsing of `long options` (Values mentioned after `-` which have their value(as a string) followed)
+- [ ] Parsing of `non options` (Single Values parameters without any prefix )
 - [ ] Parsing of `sub commands` (which only one can be used and all following arguments are related to)
 - [x] Returning results instead of throwing unfinished error messages
 - [ ] Simple creation of parser
@@ -15,8 +16,7 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 - [ ] Ability to provide default values
 - [ ] Ability to make Argument or subcommand required
 - [ ] Cache the result of parsing the cli arguments to improve performance slightly
-- [ ] Easy macro or function to configure the parser
-- [ ] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
+- [x] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 
 # Installation
 #### Only version 0.1.1 is published yet!
