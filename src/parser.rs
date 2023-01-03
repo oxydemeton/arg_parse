@@ -10,9 +10,14 @@ impl ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
     /// ```rust
-    /// const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a"), config::Arg::Parameter("b")];
-    /// const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
-    /// static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);
+    /// const LONG_OPTIONS: &'static [config::LongOption] = &[
+    /// config::LongOption{name: "hello", value_count: 0}
+    ///     ];
+    /// const SHORT_OPTIONS: &'static [config::ShortOption] = &[
+    ///     config::ShortOption{name:'b', value_count: 2},
+    ///     config::ShortOption{name:'a', value_count: 0}
+    ///     ];
+    /// const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
     /// ```
     pub const fn from(c: config::Cmd)-> Self {
         Self {
@@ -27,12 +32,7 @@ impl ArgParser {
     }
     /// Function parsing the command line arguments from [std::env::args()](std::env::args()) with the configuration
     /// # Errors
-    /// Described with [ParseError](ParseError)
-    /// - [NoArguments](ParseError::NoArguments) --> No arguments were provided. Doesn't have to be wrong but leads to no result.
-    /// - [UnknownFlag](ParseError::UnknownFlag) --> The user provided a `flag` which isn't defined
-    /// - [UnknownParameter](ParseError::UnknownParameter) --> The user provided a `parameter` which isn't defined
-    /// - [TypeNameMismatch](ParseError::TypeNameMismatch) --> The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
-    /// - [ParameterWithoutValue](ParseError::ParameterWithoutValue) --> The user provided a parameter but did not gave a value
+    /// Described in [ParseError](ParseError)
 
     pub fn parse(&self) -> Result<result::Cmd, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();

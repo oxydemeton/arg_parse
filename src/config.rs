@@ -1,7 +1,8 @@
 //! The config module includes everything to configure the [parser](parser::ArgParser)<br>
 //! Includes:
-//! - [enum Arg](config::Arg) to defer between Flags, Parameters
-//! - [struct Cmd](config::Cmd) to describe sub commands
+//! - [ShortOptions](config::ShortOption)
+//! - [LongOptions](config::LongOption)
+//! - [Commands](config::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
 use std::vec;
 
 
@@ -17,7 +18,7 @@ pub struct LongOption{
 }
 
 /// Describes the root and all sub commands. <br>
-/// A commands might have arguments ([enum Arg](Arg)) and possible sub commands which are also of type [Cmd](Cmd)
+/// A commands might have [short](ShortOption) and [long](LongOption) options and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Cmd {
     pub short_options: &'static [ShortOption],

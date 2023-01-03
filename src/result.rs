@@ -1,14 +1,25 @@
 //! Includes all results of the [parser](parser::ArgParser)<br>
 //! Includes:
-//! - [enum Arg](result::Arg) includes every kind of Argument and its value
-//! - [struct Cmd](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
+//! - [ShortOptions](result::ShortOption)
+//! - [LongOptions](result::LongOption)
+//! - [Commands](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
 
-
+/// Description of a used short option <br>
+/// ## Usage in command line:
+/// - `-n` for a short option called `n` without any parameter
+/// - `-n value` for a option called `n` with one value
+/// - `-ab` for a short option called `a` and one called `b`
+/// - `-ab value-one value-two` for a short option called `a` without parameters and one called `b` with two
 #[derive(Debug, Clone)]
 pub struct ShortOption{
     pub name: char,
     pub values: Vec<String>
 }
+
+/// Description of a used long option <br>
+/// ## Usage in command line
+/// - `--name` for a long argument called `name`
+/// - `--name value` for a long argument called `name` with one parameter
 #[derive(Debug, Clone)]
 pub struct LongOption{
     pub name: &'static str,
