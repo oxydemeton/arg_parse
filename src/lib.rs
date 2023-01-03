@@ -12,6 +12,9 @@
 //! - [ ] Ability to give of list of arguments (not using args from [std::env::args()](std::env::args()))
 //! - [ ] Ability to provide default values
 //! - [ ] Ability to make Argument or subcommand required
+//! - [ ] Cache the result of parsing the cli arguments to improve performance slightly
+//! - [ ] Easy macro or function to configure the parser
+//! 
 //! # Example
 //! Prints if the flag `--a` is provided and the parameter provided under `-b`
 //! ```rust
@@ -33,6 +36,10 @@
 //!     }
 //! }
 //! ```
+//! ### Links:
+//! [Github Repo](https://github.com/oxydemeton/arg_parse/)
+//! [Crates.io](https://crates.io/crates/arg_parse)
+//! 
 
 /// Structs and Enums to configure the parser
 pub mod config;
