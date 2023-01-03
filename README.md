@@ -15,6 +15,7 @@ arg_pare is a tool to simplify the processing of command line arguments. It does
 - [ ] Cache the result of parsing the cli arguments to improve performance slightly
 - [ ] Easy macro or function to configure the parser
 - [ ] Split Config and Results into different features which can be enabled or disabled in the cargo.toml
+- [ ] fullfil common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 
 # Installation
 Add `arg_parse = "0.1.0"` to your cargo dependencies (`cargo.toml`).
