@@ -5,13 +5,7 @@ use super::*;
 pub struct ArgParser {
     config_root: config::Cmd,
 }
-impl From<config::Cmd> for ArgParser {
-    fn from(value: config::Cmd) -> Self {
-        Self {
-            config_root: c
-        }
-    }
-} 
+
 impl ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
