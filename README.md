@@ -8,7 +8,7 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 - [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
 - [x] Parsing of `parameters` (Values mentioned after `-` which have their value(as a string) followed)
 - [ ] Parsing of `sub commands` (which only one can be used and all following arguments are related to)
-- [ ] Returning results instead of throwing unfinished error messages
+- [x] Returning results instead of throwing unfinished error messages
 - [ ] Simple creation of parser
 - [x] Ability to create parser as constant or static variable (at compile time)
 - [x] Ability to give a list of arguments (not using args from [std::env::args()](std::env::args()))
