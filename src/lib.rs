@@ -44,7 +44,7 @@
 //! }
 //! ```
 //! ### Links:
-//! [Github Repo](https://github.com/oxydemeton/arg_parse/)
+//! [Github Repo](https://github.com/oxydemeton/arg_parse/)<br>
 //! [Crates.io](https://crates.io/crates/arg_parse)
 //! 
 

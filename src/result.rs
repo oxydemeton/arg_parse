@@ -1,4 +1,4 @@
-//! Includes all results of the [parser](parser::ArgParser)
+//! Includes all results of the [parser](parser::ArgParser)<br>
 //! Includes:
 //! - [enum Arg](result::Arg) includes every kind of Argument and its value
 //! - [struct Cmd](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand

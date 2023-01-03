@@ -16,6 +16,13 @@ arg_pare is a tool to simplify the processing of command line arguments. It does
 - [ ] Easy macro or function to configure the parser
 - [ ] Split Config and Results into different features which can be enabled or disabled in the cargo.toml
 
+# Installation
+Add `arg_parse = "0.1.0"` to your cargo dependencies (`cargo.toml`).
+```toml
+[dependencies]
+arg_parse = "0.1.0"
+```
+
  # Example
  Prints if the flag `--a` is provided and the parameter provided under `-b`
  ```rust
@@ -39,5 +46,5 @@ arg_pare is a tool to simplify the processing of command line arguments. It does
  ```
 
 ### Links:
-[Github Repo](https://github.com/oxydemeton/arg_parse/)
+[Github Repo](https://github.com/oxydemeton/arg_parse/) <br>
 [Crates.io](https://crates.io/crates/arg_parse)

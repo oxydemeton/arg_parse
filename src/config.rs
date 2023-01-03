@@ -1,4 +1,4 @@
-//! The config module includes everything to configure the [parser](parser::ArgParser)
+//! The config module includes everything to configure the [parser](parser::ArgParser)<br>
 //! Includes:
 //! - [enum Arg](config::Arg) to defer between Flags, Parameters
 //! - [struct Cmd](config::Cmd) to describe sub commands
@@ -7,15 +7,15 @@ use std::vec;
 /// Enum for configuring arguments
 #[derive(Debug, Clone)]
 pub enum Arg {
-    /// Flags which are false by default and are set to true by being used by the user
+    /// Flags which are false by default and are set to true by being used by the user. <br>
     /// Has its name as argument
     Flag(&'static str),
     /// Parameters which are string inputs
     /// Has its name as argument
     Parameter(&'static str)
 }
-/// Cmd Struct
-/// Describes the root and all sub commands
+
+/// Describes the root and all sub commands. <br>
 /// A commands might have arguments ([enum Arg](Arg)) and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Cmd {
@@ -32,7 +32,7 @@ impl Cmd {
     pub const fn from(args: &'static[Arg], sub_cmd: &'static[Cmd])->Self {
         Self { args, sub_cmd}
     }
-    /// Function to parse only this subcommand with the arguments
+    /// Function to parse only this subcommand with the arguments <br>
     /// Meant for use by the [parser](super::parser::ArgParser) internally
     pub fn parse(&self, arguments: &[String])->super::result::Cmd {
         let mut result = super::result::Cmd {

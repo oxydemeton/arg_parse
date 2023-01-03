@@ -30,7 +30,7 @@ impl ArgParser {
     /// Described with [ParseError](ParseError)
     /// - [NoArguments](ParseError::NoArguments) --> No arguments were provided. Doesn't have to be wrong but leads to no result.
     /// # Panic 
-    /// In the future the function should not panic any more!
+    /// In the future the function should not panic any more!<br>
     /// But for now:
     /// - A Flag was used as an Parameter or vice versa
     /// - A Flag or Parameter which wasn't configured was used
