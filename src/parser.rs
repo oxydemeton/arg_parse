@@ -32,6 +32,7 @@ impl ArgParser {
     /// - [UnknownFlag](ParseError::UnknownFlag) --> The user provided a `flag` which isn't defined
     /// - [UnknownParameter](ParseError::UnknownParameter) --> The user provided a `parameter` which isn't defined
     /// - [TypeNameMismatch](ParseError::TypeNameMismatch) --> The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
+    /// - [ParameterWithoutValue](ParseError::ParameterWithoutValue) --> The user provided a parameter but did not gave a value
 
     pub fn parse(&self) -> Result<result::Cmd, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();
@@ -63,9 +64,14 @@ impl ArgParser {
 
 #[derive(Debug, Clone)]
 pub enum ParseError {
+    /// No arguments were provided. Doesn't have to be wrong but leads to no result.
     NoArguments,
+    /// The user provided a `flag` which isn't defined
     UnknownFlag{ name: String },
+    /// The user provided a `parameter` which isn't defined
     UnknownParameter{ name: String },
+    /// The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
     TypeNameMismatch{ name: String },
+    /// The user provided a parameter but did not gave a value
     ParameterWithoutValue{ name: String }
 }
