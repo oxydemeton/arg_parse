@@ -1,7 +1,15 @@
 [package]
 name = "arg_parse"
-version = "0.1.0"
+version = "0.0.9"
 edition = "2021"
+authors = ["Oxydemeton"]
+description = "A tool to parse console or your own arguments, without dependencies."
+license = "MIT"
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/oxydemeton/arg_parse/"
+keywords = ["tools", "cli", "args", "arguments", "no dependencies"]
+categories = ["development-tools", "command-line-interface"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
