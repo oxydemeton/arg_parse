@@ -66,12 +66,12 @@ impl ArgParser {
 pub enum ParseError {
     /// No arguments were provided. Doesn't have to be wrong but leads to no result.
     NoArguments,
-    /// The user provided a `flag` which isn't defined
-    UnknownFlag{ name: String },
-    /// The user provided a `parameter` which isn't defined
-    UnknownParameter{ name: String },
-    /// The user provided a flag which is defined as a parameter or vice versa. *(Planed to be removed)*
+    /// The user provided a `short option` which isn't defined
+    UnknownShortOption{ name: String },
+    /// The user provided a `long option` which isn't defined
+    UnknownLongOption{ name: String },
+    /// The user provided a `long option` which is defined as a `short option` or vice versa. *(Planed to be removed)*
     TypeNameMismatch{ name: String },
     /// The user provided a parameter but did not gave a value
-    ParameterWithoutValue{ name: String }
+    ParameterWithoutEnoughValues{ name: String }
 }

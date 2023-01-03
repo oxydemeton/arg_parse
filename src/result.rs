@@ -3,20 +3,28 @@
 //! - [enum Arg](result::Arg) includes every kind of Argument and its value
 //! - [struct Cmd](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
 
-/// includes every kind of Argument and its value
+
 #[derive(Debug, Clone)]
-pub enum Arg {
-    /// A Flag selected by the user which contains its name and if it was selected
-    Flag{name: &'static str, value: bool},
-    /// A Parameter selected by the user and it's value as a String
-    Parameter{ name: &'static str, value: Option<String>}
+pub struct ShortOption{
+    name: char,
+    pub values: Vec<String>
+}
+#[derive(Debug, Clone)]
+pub struct LongOption{
+    pub name: &'static str,
+    pub values: Vec<String>
 }
 
 /// Command selected by the user
 #[derive(Debug)]
 pub struct Cmd {
-    /// All given Arguments to this specific command
-    pub args: Vec<Arg>,
-    /// If provided the given subcommand
+    pub short_options: Vec<ShortOption>,
+    pub long_options: Vec<LongOption>,
     pub sub_cmd: Option<Box<Cmd>>
+}
+
+impl Cmd {
+    pub fn new()->Self {
+        Self { short_options: vec![], long_options: vec![], sub_cmd: None }
+    }
 }

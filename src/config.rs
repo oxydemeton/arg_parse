@@ -4,42 +4,42 @@
 //! - [struct Cmd](config::Cmd) to describe sub commands
 use std::vec;
 
-/// Enum for configuring arguments
+
 #[derive(Debug, Clone)]
-pub enum Arg {
-    /// Flags which are false by default and are set to true by being used by the user. <br>
-    /// Has its name as argument
-    Flag{ name: &'static str },
-    /// Parameters which are string inputs
-    /// Has its name as argument
-    Parameter{ name: &'static str}
+pub struct ShortOption{
+    pub name: char,
+    pub value_count: usize
+}
+#[derive(Debug, Clone)]
+pub struct LongOption{
+    pub name: &'static str,
+    pub value_count: usize
 }
 
 /// Describes the root and all sub commands. <br>
 /// A commands might have arguments ([enum Arg](Arg)) and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Cmd {
-    pub args: &'static[Arg],
+    pub short_options: &'static [ShortOption],
+    pub long_options: &'static [LongOption],
     pub sub_cmd: &'static[Cmd]
 }
 
 impl Cmd {
     /// Creates an Command without any possible arguments or sub commands
     pub const fn new()->Self {
-        Self { args: &[], sub_cmd: &[]}
+        Self { long_options: &[], short_options: &[], sub_cmd: &[]}
     }
     /// Creates a Commands having a list of arguments and sub commands
-    pub const fn from(args: &'static[Arg], sub_cmd: &'static[Cmd])->Self {
-        Self { args, sub_cmd}
+    pub const fn from(short_options: &'static [ShortOption], long_options: &'static [LongOption], sub_cmd: &'static[Cmd])->Self {
+        Self { short_options, long_options,  sub_cmd}
     }
     /// Function to parse only this subcommand with the arguments <br>
     /// Meant for use by the [parser](super::parser::ArgParser) internally
     pub fn parse(&self, arguments: &[String])->Result<super::result::Cmd, super::parser::ParseError> {
         use super::parser::ParseError;
-        let mut result = super::result::Cmd {
-            args: vec![],
-            sub_cmd: None,
-        };
+        use super::result;
+        let mut result = super::result::Cmd::new();
 
         let mut skip = 0;        
         for (i, a) in arguments.iter().enumerate() {
@@ -47,32 +47,31 @@ impl Cmd {
                 skip -= 1;
                 continue;
             }
-            if a.starts_with("--") { //Flags
-                let name = a.trim_start_matches("--");
-                match self.find_arg(name) {
-                    Some(a) => match a {
-                        Arg::Flag { name: self_name } => result.args.push(super::result::Arg::Flag{name: self_name, value: true}),
-                        Arg::Parameter { name: _ } => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
-                    },
-                    None => return Err(ParseError::UnknownFlag { name: String::from(name)}),
-                }
-                
-            }else if a.starts_with("-") { // Arguments
-                let name = a.trim_start_matches("-");
-                match self.find_arg(name) {
-                    Some(a) => match a {
-                        Arg::Parameter{name :self_name} => {
-                            if i+1 >= arguments.len() {
-                                return Err(ParseError::ParameterWithoutValue { name: String::from(name) });
+
+            //LongOption Parsing
+            if a.starts_with("--") { 
+                let option_option = self.find_long_option(a);
+                match option_option {
+                    Err(name) => return Err(ParseError::UnknownLongOption { name: String::from(name)}),
+                    Ok(option) => {
+                        if option.value_count == 0 {
+                            result.long_options.push(result::LongOption{name: option.name, values: vec![String::new()]})
+                        }else {
+                            let mut option_result = result::LongOption{name: option.name, values: vec![]};
+                            if option.value_count >= arguments.len() {
+                                return Err(ParseError::ParameterWithoutEnoughValues { name: String::from(option.name) })
                             }
-                            let value = arguments[i+1].clone();
-                            skip +=1;
-                            result.args.push(super::result::Arg::Parameter{ name: self_name, value: Some(value)})
-                        },
-                        Arg::Flag{name: _} => return Err(ParseError::TypeNameMismatch { name: String::from(name) }),
-                    },
-                    None => return Err(ParseError::UnknownParameter { name: String::from(name) }),
+                            skip = option.value_count;
+                            for i_value in i+1..i+option.value_count+1 {
+                                option_result.values.push(arguments[i_value].clone());
+                            }
+                            result.long_options.push(option_result);
+                        }
+                    }
                 }
+
+            }else if a.starts_with("-") { // Short Options
+                todo!("Short options are not implemented")
             } else { //Subcommand
                 todo!("Subcommands not implemented")
             }
@@ -81,21 +80,21 @@ impl Cmd {
         Ok(result)        
     }
     //Find an argument by its name in the list of them
-    fn find_arg(&self, name: &str)-> Option<&Arg> {
-        for self_a in self.args {
-            match self_a {
-                Arg::Flag{name: self_name} => {
-                    if *self_name == name {
-                        return Some(self_a);
-                    }
-                },
-                Arg::Parameter{ name: self_name} => {
-                    if *self_name == name {
-                        return Some(self_a);
-                    }
-                },
+    fn find_short_option(&self, name: &char)-> Option<&ShortOption> {
+        for o in self.short_options {
+            if o.name == *name {
+                return Some(o)
             }
         }
         None
+    }
+    fn find_long_option<'a>(&self, name_input: &'a str)-> Result<&LongOption, &'a str> {
+        let name = name_input.trim_start_matches("--");
+        for o in self.long_options {
+            if o.name == name {
+                return Ok(o)
+            }
+        }
+        Err(name)
     }
 }
