@@ -9,4 +9,6 @@ arg_pare is a tool to simplify the processing of command line arguments. It does
 - [ ] Returning results instead of throwing unfinished error messages
 - [ ] Simple creation of parser
 - [x] Ability to create parser as constant or static variable (at compile time)
-- [ ] Ability to give of list of arguments (not using args from std::env::args)
+- [ ] Ability to give of list of arguments (not using args from [std::env::args()](std::env::args()))
+- [ ] Ability to provide default values
+- [ ] Ability to make Argument or subcommand required
