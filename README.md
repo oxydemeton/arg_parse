@@ -1,8 +1,10 @@
 # arg_parse for rust
-### Description
+# Disclaimer
+The interface for developer is work in progress. So expect minor and major changes when updating until v1.0<br>
+# Description
 arg_parse is a tool to simplify the processing of command line arguments. It doesn't have any dependencies and the initialization is done at compile time.
 
-## Features
+# Features
 - [x] Parsing of `flags` (Values set with `--` which default is false and set to true by being used.)
 - [x] Parsing of `parameters` (Values mentioned after `-` which have their value(as a string) followed)
 - [ ] Parsing of `sub commands` (which only one can be used and all following arguments are related to)
