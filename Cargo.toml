@@ -1,6 +1,6 @@
 [package]
 name = "arg_parse"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 authors = ["Oxydemeton"]
 description = "A tool to parse console or your own arguments, without dependencies."
