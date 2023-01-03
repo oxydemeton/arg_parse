@@ -31,7 +31,7 @@
 //! use arg_parse::ArgParser;
 //! use arg_parse::config;
 //! // Define all Arguments of the program itself/root command (compile time)
-//! const ARGS: &'static [config::Arg] = &[config::Arg::Flag("a"), config::Arg::Parameter("b")];
+//! const ARGS: &'static [config::Arg] = &[config::Arg::Flag{ name: "a" }, config::Arg::Parameter{ name: "b" }];
 //! // Define the Root Command, without any possible sub commands (compile time)
 //! const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(ARGS, &[]);
 //! // Create the Parser in static memory, available everywhere (Created at compile time)
