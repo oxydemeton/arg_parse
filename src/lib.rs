@@ -9,7 +9,7 @@
 //! - [ ] Returning results instead of throwing unfinished error messages
 //! - [ ] Simple creation of parser
 //! - [x] Ability to create parser as constant or static variable (at compile time)
-//! - [ ] Ability to give of list of arguments (not using args from [std::env::args()](std::env::args()))
+//! - [x] Ability to give a list of arguments (not using args from [std::env::args()](std::env::args()))
 //! - [ ] Ability to provide default values
 //! - [ ] Ability to make Argument or subcommand required
 //! - [ ] Cache the result of parsing the cli arguments to improve performance slightly
