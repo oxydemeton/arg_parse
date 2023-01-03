@@ -73,5 +73,7 @@ pub enum ParseError {
     /// The user provided a `long option` which is defined as a `short option` or vice versa. *(Planed to be removed)*
     TypeNameMismatch{ name: String },
     /// The user provided a parameter but did not gave a value
-    ParameterWithoutEnoughValues{ name: String }
+    ParameterWithoutEnoughValues{ name: String },
+    /// A Short Option which expects values was used inside a combination of multiple once
+    ShortOptionMissingValue{ name: String },
 }

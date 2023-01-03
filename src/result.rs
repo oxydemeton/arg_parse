@@ -6,7 +6,7 @@
 
 #[derive(Debug, Clone)]
 pub struct ShortOption{
-    name: char,
+    pub name: char,
     pub values: Vec<String>
 }
 #[derive(Debug, Clone)]

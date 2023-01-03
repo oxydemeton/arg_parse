@@ -71,7 +71,26 @@ impl Cmd {
                 }
 
             }else if a.starts_with("-") { // Short Options
-                todo!("Short options are not implemented")
+                let options_option = self.find_short_options(a);
+                match options_option {
+                    Err(name) => return Err(ParseError::UnknownShortOption { name: String::from(name) }),
+                    Ok(options) => {
+                        for (i_option, option) in options.iter().enumerate() {
+                            let mut option_result = result::ShortOption{name: option.name, values: vec![]};
+                            if i_option == options.len()-1 && option.value_count > 0 {
+                                skip = option.value_count;
+                                for i_value in i+1..i+option.value_count+1 {
+                                    option_result.values.push(arguments[i_value].clone());
+                                }
+                            }else if option.value_count > 0 {
+                                return Err(ParseError::ShortOptionMissingValue { name: String::from(option.name) })
+                            }else {
+                                option_result.values.push(String::new());
+                            }
+                            result.short_options.push(option_result);
+                        }
+                    }
+                }
             } else { //Subcommand
                 todo!("Subcommands not implemented")
             }
@@ -80,13 +99,21 @@ impl Cmd {
         Ok(result)        
     }
     //Find an argument by its name in the list of them
-    fn find_short_option(&self, name: &char)-> Option<&ShortOption> {
-        for o in self.short_options {
-            if o.name == *name {
-                return Some(o)
+    fn find_short_options(&self, input_names: &str)-> Result<Vec<&ShortOption>, char> {
+        let names = input_names.trim_start_matches("-");
+        let mut result = vec![];
+        for c in names.chars() {
+            let len_before = result.len();
+            for o in self.short_options {
+                if o.name == c {
+                    result.push(o)
+                }
+            }
+            if result.len() == len_before {
+                return Err(c)
             }
         }
-        None
+        Ok(result)
     }
     fn find_long_option<'a>(&self, name_input: &'a str)-> Result<&LongOption, &'a str> {
         let name = name_input.trim_start_matches("--");
