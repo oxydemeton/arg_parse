@@ -10,6 +10,8 @@ impl ArgParser {
     /// Create a new Parser, giving the "root" command
     /// # Example
     /// ```rust
+    /// use arg_parse::ArgParser;
+    /// use arg_parse::config;
     /// const LONG_OPTIONS: &'static [config::LongOption] = &[
     /// config::LongOption{name: "hello", value_count: 0}
     ///     ];
