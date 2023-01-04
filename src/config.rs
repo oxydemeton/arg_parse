@@ -51,15 +51,26 @@ impl Cmd {
 
             //LongOption Parsing
             if a.starts_with("--") { 
-                let option_option = self.find_long_option(a);
+                let option_option = {
+                    if a.contains("=") {
+                        self.find_long_option(a.split("=").collect::<Vec<&str>>()[0])
+                    }else {
+                        self.find_long_option(a)
+                    }
+                };
                 match option_option {
                     Err(name) => return Err(ParseError::UnknownLongOption { name: String::from(name)}),
                     Ok(option) => {
                         if option.value_count == 0 {
                             result.long_options.push(result::LongOption{name: option.name, values: vec![String::new()]})
-                        }else {
+                        } else if option.value_count == 1 && a.contains("=") {
                             let mut option_result = result::LongOption{name: option.name, values: vec![]};
-                            if option.value_count >= arguments.len() {
+                            let v = a.split("=").collect::<Vec<&str>>()[1];
+                            option_result.values.push(String::from(v));
+                            result.long_options.push(option_result);
+                        } else {
+                            let mut option_result = result::LongOption{name: option.name, values: vec![]};
+                            if option.value_count >= arguments.len()-i {
                                 return Err(ParseError::ParameterWithoutEnoughValues { name: String::from(option.name) })
                             }
                             skip = option.value_count;
@@ -72,13 +83,25 @@ impl Cmd {
                 }
 
             }else if a.starts_with("-") { // Short Options
-                let options_option = self.find_short_options(a);
+                let options_option = {
+                    if a.contains("=") {
+                        self.find_short_options(a.split("=").collect::<Vec<&str>>()[0])
+                    }else {
+                        self.find_short_options(a)
+                    }
+                };
                 match options_option {
                     Err(name) => return Err(ParseError::UnknownShortOption { name: String::from(name) }),
                     Ok(options) => {
                         for (i_option, option) in options.iter().enumerate() {
                             let mut option_result = result::ShortOption{name: option.name, values: vec![]};
-                            if i_option == options.len()-1 && option.value_count > 0 {
+                            if i_option == options.len()-1 && option.value_count == 1 && a.contains("=") {
+                                let v = a.split("=").collect::<Vec<&str>>()[1];
+                                option_result.values.push(String::from(v));
+                            }else if i_option == options.len()-1 && option.value_count > 0 {
+                                if option.value_count >= arguments.len()-i {
+                                    return Err(ParseError::ParameterWithoutEnoughValues { name: String::from(option.name) })
+                                }
                                 skip = option.value_count;
                                 for i_value in i+1..i+option.value_count+1 {
                                     option_result.values.push(arguments[i_value].clone());

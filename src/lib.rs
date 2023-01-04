@@ -19,10 +19,10 @@
 //! - [x] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 //! 
 //! # Installation
-//! Add `arg_parse = "0.2.1"` to your cargo dependencies (`cargo.toml`).
+//! Add `arg_parse = "0.2.3"` to your cargo dependencies (`cargo.toml`).
 //! ```toml
 //! [dependencies]
-//! arg_parse = "0.2.1"
+//! arg_parse = "0.2.3"
 //! ```
 //! 
 //!  # Example
