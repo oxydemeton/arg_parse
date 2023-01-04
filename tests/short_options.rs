@@ -3,7 +3,7 @@ use std::vec;
 #[test]
 fn main(){
     use arg_parse::{ArgParser, config::{self, ShortOption}};
-    const parser: ArgParser = {
+    let parser: ArgParser = {
         let short_options: &'static [ShortOption] = &[
             ShortOption{name:'a', value_count: 0},
             ShortOption{name:'b', value_count: 0},

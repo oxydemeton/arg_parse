@@ -3,7 +3,7 @@ use std::vec;
 #[test]
 fn main(){
     use arg_parse::{ArgParser, config::{self, LongOption}};
-    const parser: ArgParser = {
+    let parser: ArgParser = {
         let short_options= &[];
         let long_options = &[
             LongOption{name: "a_option", value_count: 0},
