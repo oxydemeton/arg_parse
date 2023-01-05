@@ -118,8 +118,15 @@ impl Config {
                         }
                     }
                 }
-            } else { //Subcommand
-                todo!("Subcommands not implemented")
+            } else { //Non Options
+                let option_option = self.find_non_option(a);
+                match option_option {
+                    Ok(option) => {
+                        result.non_options.push(result::NonOption{name: option.name});
+                    },
+                    Err(name) => return Err(ParseError::UnknownShortOption { name: String::from(name) }),
+                }
+                todo!("Non Options not implemented")
             }
 
         }
@@ -145,6 +152,14 @@ impl Config {
     fn find_long_option<'a>(&self, name_input: &'a str)-> Result<&LongOption, &'a str> {
         let name = name_input.trim_start_matches("--");
         for o in self.long_options {
+            if o.name == name {
+                return Ok(o)
+            }
+        }
+        Err(name)
+    }
+    fn find_non_option<'a>(&self, name: &'a str)-> Result<&NonOption, &'a str> {
+        for o in self.non_options {
             if o.name == name {
                 return Ok(o)
             }
