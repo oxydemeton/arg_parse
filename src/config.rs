@@ -2,6 +2,7 @@
 //! Includes:
 //! - [ShortOptions](config::ShortOption)
 //! - [LongOptions](config::LongOption)
+//! - [NonOptions](config::NonOption)
 //! - [Commands](config::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
 use std::vec;
 
@@ -22,7 +23,7 @@ pub struct NonOption {
     pub value_count: usize
 }
 /// Describes the root and all sub commands. <br>
-/// A commands might have [short](ShortOption) and [long](LongOption) options and possible sub commands which are also of type [Cmd](Cmd)
+/// A commands might have [short](ShortOption), [long](LongOption) and [non][NonOption] options and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Config {
     pub short_options: &'static [ShortOption],

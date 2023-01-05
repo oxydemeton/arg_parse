@@ -10,7 +10,7 @@
 //! fn main() {
 //!     use arg_parse::config::{self, LongOption};
 //!     let parser = {
-//!         let config = config::Cmd::from(&[/*No short options */ ], &[
+//!         let config = config::Cmd::from(&[/*No Long options */ ], &[
 //!             LongOption{name: "alpha", value_count: 1}, //Long Option called alpha which needs one value from the user
 //!             LongOption{name: "beta", value_count: 0}, //Long option called beta without any values
 //!             LongOption{name: "gamma", value_count: 3} //Long option called gamma which need three values from the user

@@ -2,6 +2,7 @@
 //! Includes:
 //! - [ShortOptions](result::ShortOption)
 //! - [LongOptions](result::LongOption)
+//! - [NonOptions](result::NonOption)
 //! - [Commands](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
 
 /// Description of a used short option <br>
@@ -25,6 +26,10 @@ pub struct LongOption{
     pub name: &'static str,
     pub values: Vec<String>
 }
+/// Description of a used Non option <br>
+/// ## Usage in command line
+/// - `name` for a non argument called `name`
+/// - `name value` for a non argument called `name` with one parameter
 #[derive(Debug, Clone)]
 pub struct NonOption{
     pub name: &'static str,

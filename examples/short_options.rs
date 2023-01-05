@@ -14,7 +14,7 @@
 //!             ShortOption{name: 'a', value_count: 0}, // Short Option called a which doesn't accept any arguments
 //!             ShortOption{name: 'b', value_count: 1}, // Short Option called b which accepts one argument
 //!             ShortOption{name: 'c', value_count: 3} // Short Option called c which accepts two arguments
-//!         ], &[/*No long options*/], &[/*No subcommands */]);
+//!         ], &[/*No long options*/], &[/*No non options */]);
 //!         arg_parse::ArgParser::from(config)
 //!     };
 //! 
