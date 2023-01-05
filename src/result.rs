@@ -25,17 +25,18 @@ pub struct LongOption{
     pub name: &'static str,
     pub values: Vec<String>
 }
-
+#[derive(Debug, Clone)]
+pub struct NonOption;
 /// Command selected by the user
 #[derive(Debug)]
 pub struct Root {
     pub short_options: Vec<ShortOption>,
     pub long_options: Vec<LongOption>,
-    pub sub_cmd: Option<Box<Root>>
+    pub non_options: Vec<NonOption>
 }
 
 impl Root {
     pub fn new()->Self {
-        Self { short_options: vec![], long_options: vec![], sub_cmd: None }
+        Self { short_options: vec![], long_options: vec![], non_options: vec![] }
     }
 }
