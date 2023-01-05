@@ -16,24 +16,27 @@ pub struct LongOption{
     pub name: &'static str,
     pub value_count: usize
 }
-
+#[derive(Debug, Clone)]
+pub struct NonOption {
+    pub name: &'static str,
+}
 /// Describes the root and all sub commands. <br>
 /// A commands might have [short](ShortOption) and [long](LongOption) options and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
 pub struct Config {
     pub short_options: &'static [ShortOption],
     pub long_options: &'static [LongOption],
-    pub sub_cmd: &'static[Config]
+    pub non_options: &'static[NonOption]
 }
 
 impl Config {
     /// Creates an Command without any possible arguments or sub commands
     pub const fn new()->Self {
-        Self { long_options: &[], short_options: &[], sub_cmd: &[]}
+        Self { long_options: &[], short_options: &[], non_options: &[]}
     }
     /// Creates a Commands having a list of arguments and sub commands
-    pub const fn from(short_options: &'static [ShortOption], long_options: &'static [LongOption], sub_cmd: &'static[Config])->Self {
-        Self { short_options, long_options,  sub_cmd}
+    pub const fn from(short_options: &'static [ShortOption], long_options: &'static [LongOption], non_options: &'static[NonOption])->Self {
+        Self { short_options, long_options,  non_options}
     }
     /// Function to parse only this subcommand with the arguments <br>
     /// Meant for use by the [parser](super::parser::ArgParser) internally
