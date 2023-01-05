@@ -7,7 +7,7 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 # Features & Goals
 - [x] Parsing of `short options` (Values set with `--` which default is false and set to true by being used.)
 - [x] Parsing of `long options` (Values mentioned after `-` which have their value(as a string) followed)
-- [ ] Parsing of `non options` (Single Values parameters without any prefix )
+- [x] Parsing of `non options` (Single Values parameters without any prefix )
 - [ ] Parsing of `sub commands` (which only one can be used and all following arguments are related to)
 - [x] Returning results instead of throwing unfinished error messages
 - [ ] Simple creation of parser
@@ -19,10 +19,10 @@ arg_parse is a tool to simplify the processing of command line arguments. It doe
 - [x] fulfill  common patters, like described in this [specification](https://gist.github.com/pksunkara/1485856)
 
 # Installation
-Add `arg_parse = "0.2.3"` to your cargo dependencies (`cargo.toml`).
+Add `arg_parse = "0.3.0"` to your cargo dependencies (`cargo.toml`).
 ```toml
 [dependencies]
-arg_parse = "0.2.3"
+arg_parse = "0.3.0"
 ```
 
  # Example
@@ -47,9 +47,14 @@ const SHORT_OPTIONS: &'static [config::ShortOption] = &[
     //Define a short option called a without parameters
     config::ShortOption{name:'a', value_count: 0}
     ];
-
+const NON_OPTIONS: &'static [config::NonOption] = &[
+    //Define a non option called non-option with three parameters
+    config::NonOption{name: "non-option", value_count: 3},
+    //Define a short option called a without parameters
+    config::NonOption{name:"last-option", value_count: 0}
+    ];
 //Create the root command which is the program itself basically
-const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
+const PARSER_ROOT_CMD: config::Config = config::Config::from(SHORT_OPTIONS, LONG_OPTIONS, NON_OPTIONS);
 
 //Create the parser from the root command
 static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);

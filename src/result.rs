@@ -2,7 +2,8 @@
 //! Includes:
 //! - [ShortOptions](result::ShortOption)
 //! - [LongOptions](result::LongOption)
-//! - [Commands](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
+//! - [NonOptions](result::NonOption)
+//! - [Commands](result::Root) a sub or the "root" command with its arguments and optionally a subcommand
 
 /// Description of a used short option <br>
 /// ## Usage in command line:
@@ -25,17 +26,25 @@ pub struct LongOption{
     pub name: &'static str,
     pub values: Vec<String>
 }
-
+/// Description of a used Non option <br>
+/// ## Usage in command line
+/// - `name` for a non argument called `name`
+/// - `name value` for a non argument called `name` with one parameter
+#[derive(Debug, Clone)]
+pub struct NonOption{
+    pub name: &'static str,
+    pub values: Vec<String>
+}
 /// Command selected by the user
 #[derive(Debug)]
-pub struct Cmd {
+pub struct Root {
     pub short_options: Vec<ShortOption>,
     pub long_options: Vec<LongOption>,
-    pub sub_cmd: Option<Box<Cmd>>
+    pub non_options: Vec<NonOption>
 }
 
-impl Cmd {
+impl Root {
     pub fn new()->Self {
-        Self { short_options: vec![], long_options: vec![], sub_cmd: None }
+        Self { short_options: vec![], long_options: vec![], non_options: vec![] }
     }
 }

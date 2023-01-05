@@ -17,7 +17,7 @@ fn main(){
             LongOption{name: "i_option", value_count: 0},
             LongOption{name: "j_option", value_count: 1},
         ];
-        let config = config::Cmd::from(short_options, long_options, &[]);
+        let config = config::Config::from(short_options, long_options, &[]);
         ArgParser::from(config)
     };
     let arguments: Vec<String> = vec![

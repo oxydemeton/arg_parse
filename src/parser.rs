@@ -3,7 +3,7 @@ use super::*;
 /// # The Parser itself 
 /// It contains only the "root" command, which is similar to a sub command but always exists. It has its own arguments and sub commands
 pub struct ArgParser {
-    config_root: config::Cmd,
+    config_root: config::Config,
 }
 
 impl ArgParser {
@@ -19,9 +19,9 @@ impl ArgParser {
     ///     config::ShortOption{name:'b', value_count: 2},
     ///     config::ShortOption{name:'a', value_count: 0}
     ///     ];
-    /// const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
+    /// const PARSER_ROOT_CMD: config::Config = config::Config::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
     /// ```
-    pub const fn from(c: config::Cmd)-> Self {
+    pub const fn from(c: config::Config)-> Self {
         Self {
             config_root: c
         }
@@ -29,14 +29,14 @@ impl ArgParser {
     /// Create an empty parser which doesn't have any contents
     pub const fn new<'f>()-> Self {
         Self {
-            config_root: config::Cmd::new()
+            config_root: config::Config::new()
         }
     }
     /// Function parsing the command line arguments from [std::env::args()](std::env::args()) with the configuration
     /// # Errors
     /// Described in [ParseError](ParseError)
 
-    pub fn parse(&self) -> Result<result::Cmd, ParseError> {
+    pub fn parse(&self) -> Result<result::Root, ParseError> {
         let mut sys_args: Vec<String> = std::env::args().collect();
         for a in sys_args.iter_mut() {
             *a = a.trim().to_owned()
@@ -49,7 +49,7 @@ impl ArgParser {
     }
 
     /// Does the same as parse but with you own arguments provided as input instead of them from [std::env::args()](std::env::args())
-    pub fn parse_custom(&self, mut args: Vec<String>) -> Result<result::Cmd, ParseError> {
+    pub fn parse_custom(&self, mut args: Vec<String>) -> Result<result::Root, ParseError> {
         for a in args.iter_mut() {
             *a = a.trim().to_owned()
         }
@@ -72,6 +72,8 @@ pub enum ParseError {
     UnknownShortOption{ name: String },
     /// The user provided a `long option` which isn't defined
     UnknownLongOption{ name: String },
+    /// The user provided a `non option` which isn't defined
+    UnknownNonOption{ name: String },
     /// The user provided a parameter but did not gave a value
     ParameterWithoutEnoughValues{ name: String },
     /// A Short Option which expects values was used inside a combination of multiple once
