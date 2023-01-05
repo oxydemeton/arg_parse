@@ -28,6 +28,7 @@ pub struct LongOption{
 #[derive(Debug, Clone)]
 pub struct NonOption{
     pub name: &'static str,
+    pub values: Vec<String>
 }
 /// Command selected by the user
 #[derive(Debug)]

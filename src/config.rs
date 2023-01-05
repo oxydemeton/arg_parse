@@ -19,6 +19,7 @@ pub struct LongOption{
 #[derive(Debug, Clone)]
 pub struct NonOption {
     pub name: &'static str,
+    pub value_count: usize
 }
 /// Describes the root and all sub commands. <br>
 /// A commands might have [short](ShortOption) and [long](LongOption) options and possible sub commands which are also of type [Cmd](Cmd)
@@ -119,14 +120,36 @@ impl Config {
                     }
                 }
             } else { //Non Options
-                let option_option = self.find_non_option(a);
+                let option_option = {
+                    if a.contains("=") {
+                        self.find_non_option(a.split("=").collect::<Vec<&str>>()[0])
+                    }else {
+                        self.find_non_option(a)
+                    }
+                };
                 match option_option {
+                    Err(name) => return Err(ParseError::UnknownNonOption { name: String::from(name)}),
                     Ok(option) => {
-                        result.non_options.push(result::NonOption{name: option.name});
-                    },
-                    Err(name) => return Err(ParseError::UnknownShortOption { name: String::from(name) }),
+                        if option.value_count == 0 {
+                            result.non_options.push(result::NonOption{name: option.name, values: vec![String::new()]})
+                        } else if option.value_count == 1 && a.contains("=") {
+                            let mut option_result = result::NonOption{name: option.name, values: vec![]};
+                            let v = a.split("=").collect::<Vec<&str>>()[1];
+                            option_result.values.push(String::from(v));
+                            result.non_options.push(option_result);
+                        } else {
+                            let mut option_result = result::NonOption{name: option.name, values: vec![]};
+                            if option.value_count >= arguments.len()-i {
+                                return Err(ParseError::ParameterWithoutEnoughValues { name: String::from(option.name) })
+                            }
+                            skip = option.value_count;
+                            for i_value in i+1..i+option.value_count+1 {
+                                option_result.values.push(arguments[i_value].clone());
+                            }
+                            result.non_options.push(option_result);
+                        }
+                    }
                 }
-                todo!("Non Options not implemented")
             }
 
         }
