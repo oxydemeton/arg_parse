@@ -28,13 +28,13 @@ pub struct LongOption{
 
 /// Command selected by the user
 #[derive(Debug)]
-pub struct Cmd {
+pub struct Root {
     pub short_options: Vec<ShortOption>,
     pub long_options: Vec<LongOption>,
-    pub sub_cmd: Option<Box<Cmd>>
+    pub sub_cmd: Option<Box<Root>>
 }
 
-impl Cmd {
+impl Root {
     pub fn new()->Self {
         Self { short_options: vec![], long_options: vec![], sub_cmd: None }
     }

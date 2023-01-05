@@ -17,7 +17,7 @@ fn main(){
             ShortOption{name:'j', value_count: 1},
             ];
         let long_options = &[];
-        let config = config::Cmd::from(short_options, long_options, &[]);
+        let config = config::Config::from(short_options, long_options, &[]);
         ArgParser::from(config)
     };
     let arguments: Vec<String> = vec![

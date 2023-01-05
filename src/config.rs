@@ -20,27 +20,27 @@ pub struct LongOption{
 /// Describes the root and all sub commands. <br>
 /// A commands might have [short](ShortOption) and [long](LongOption) options and possible sub commands which are also of type [Cmd](Cmd)
 #[derive(Debug)]
-pub struct Cmd {
+pub struct Config {
     pub short_options: &'static [ShortOption],
     pub long_options: &'static [LongOption],
-    pub sub_cmd: &'static[Cmd]
+    pub sub_cmd: &'static[Config]
 }
 
-impl Cmd {
+impl Config {
     /// Creates an Command without any possible arguments or sub commands
     pub const fn new()->Self {
         Self { long_options: &[], short_options: &[], sub_cmd: &[]}
     }
     /// Creates a Commands having a list of arguments and sub commands
-    pub const fn from(short_options: &'static [ShortOption], long_options: &'static [LongOption], sub_cmd: &'static[Cmd])->Self {
+    pub const fn from(short_options: &'static [ShortOption], long_options: &'static [LongOption], sub_cmd: &'static[Config])->Self {
         Self { short_options, long_options,  sub_cmd}
     }
     /// Function to parse only this subcommand with the arguments <br>
     /// Meant for use by the [parser](super::parser::ArgParser) internally
-    pub fn parse(&self, arguments: &[String])->Result<super::result::Cmd, super::parser::ParseError> {
+    pub fn parse(&self, arguments: &[String])->Result<super::result::Root, super::parser::ParseError> {
         use super::parser::ParseError;
         use super::result;
-        let mut result = super::result::Cmd::new();
+        let mut result = super::result::Root::new();
 
         let mut skip = 0;        
         for (i, a) in arguments.iter().enumerate() {
