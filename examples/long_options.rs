@@ -1,20 +1,20 @@
 //! # Configuration of long options in the parser
-//! The [config/cmd](arg_parse::config::Cmd) accepts as a second argument a slice of [config::LongOption](arg_parse::config::LongOption).<br>
+//! The [config/cmd](arg_parse::config::Config) accepts as a second argument a slice of [config::LongOption](arg_parse::config::LongOption).<br>
 //! A short option contains a [name](str) and the [count](usize) of values which the user has to provide
 //! # Parsing input
 //! You can parse what the user provided by using [parser.parse()](arg_parse::ArgParser::parse()) or you can use [parser.parse_custom()](arg_parse::ArgParser::parse_custom()) like in this example
 //! #Result
-//! A nested structure of [result::Cmd](arg_parse::result::Cmd) where each command contains the used arguments including the provided values if configured
+//! A nested structure of [result::Root](arg_parse::result::ResRootult) where each command contains the used arguments including the provided values if configured
 //! #Example
 //! ```rust,editable
 //! fn main() {
 //!     use arg_parse::config::{self, LongOption};
 //!     let parser = {
-//!         let config = config::Cmd::from(&[/*No short options */ ], &[
+//!         let config = config::Config::from(&[/*No Long options */ ], &[
 //!             LongOption{name: "alpha", value_count: 1}, //Long Option called alpha which needs one value from the user
 //!             LongOption{name: "beta", value_count: 0}, //Long option called beta without any values
 //!             LongOption{name: "gamma", value_count: 3} //Long option called gamma which need three values from the user
-//!         ], &[/*No non options */]);
+//!         ], &[/*No subcommands */]);
 //!         arg_parse::ArgParser::from(config)
 //!     };
 //! 

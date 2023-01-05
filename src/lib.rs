@@ -49,7 +49,7 @@
 //!     ];
 //! 
 //! //Create the root command which is the program itself basically
-//! const PARSER_ROOT_CMD: config::Cmd = config::Cmd::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
+//! const PARSER_ROOT_CMD: config::Config = config::Config::from(SHORT_OPTIONS, LONG_OPTIONS, &[]);
 //! 
 //! //Create the parser from the root command
 //! static PARSER: ArgParser = ArgParser::from(PARSER_ROOT_CMD);

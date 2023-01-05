@@ -3,7 +3,7 @@
 //! - [ShortOptions](result::ShortOption)
 //! - [LongOptions](result::LongOption)
 //! - [NonOptions](result::NonOption)
-//! - [Commands](result::Cmd) a sub or the "root" command with its arguments and optionally a subcommand
+//! - [Commands](result::Root) a sub or the "root" command with its arguments and optionally a subcommand
 
 /// Description of a used short option <br>
 /// ## Usage in command line:
